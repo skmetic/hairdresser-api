@@ -4,6 +4,7 @@ import { Inject, Singleton } from 'typescript-ioc';
 import { CustomerService } from '../services/customer.service';
 import { Customer } from '../models/customer.entity';
 import { Validator, validate } from 'class-validator';
+import { ErrorMessages } from '../exceptions/error-messages';
 export class CustomerController {
   validator: Validator;
   constructor(@Inject private customerService: CustomerService) {
@@ -29,12 +30,12 @@ export class CustomerController {
         const customer: Customer = Customer.newCustomer(ctx.request.body);
         const errors = await validate(customer)
         if (errors.length > 0) {
-          throw new Error ('Parameter of invalide type.')
+          throw new Error (ErrorMessages.INVALID_PARAMS)
         }
         const result = await this.customerService.saveCustomer(customer);
         ctx.body = result;
       } else {
-        throw new Error('Missing required parameters.');
+        throw new Error(ErrorMessages.MISSING_PARAMS);
       }
     } catch (e) {
       ctx.throw(400, e.message);
@@ -46,7 +47,7 @@ export class CustomerController {
       let customerId: number|string = ctx.params.id;
       if (!this.validator.isNumber(customerId)) {
         if (!this.validator.isNumberString(ctx.params.id)) {
-          throw new Error('Parameter should be a number.');
+          throw new Error(ErrorMessages.PARAMETER_SHOULD_BE_NUMBER);
         }
         customerId = parseInt(ctx.params.id);
       }
