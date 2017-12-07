@@ -22,12 +22,14 @@ export class WorkingHours {
     date: Date;
     startTime: string;
     endTime: string;
+    hairSalon: Object;
   }) {
     const newWorkingHours = new WorkingHours();
     if (obj.id) newWorkingHours.id = obj.id;
-    if (obj.date) newWorkingHours.date = obj.date;
-    if (obj.startTime) newWorkingHours.startTime = obj.startTime;
-    if (obj.endTime) newWorkingHours.endTime = obj.endTime;
+     newWorkingHours.date = obj.date;
+     newWorkingHours.startTime = obj.startTime;
+    newWorkingHours.endTime = obj.endTime;
+    if (obj.hairSalon) newWorkingHours.hairSalon = HairSalon.newHairSalon(<HairSalon>obj.hairSalon);
     return newWorkingHours;
   }
 }
