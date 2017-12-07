@@ -1,0 +1,72 @@
+{
+  "name": "hairdresser-api",
+  "version": "0.0.1",
+  "description": "Api for hairdresser shop",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --rootDir ./src/",
+    "start": "ts-node src/index.ts",
+    "start:debug": "ts-node --inspect=5858 --debug-brk --ignore false src/index.ts",
+    "test": "mocha -w -r ts-node/register src/**/*.spec.ts",
+    "test:debug": "mocha --inspect --debug-brk --not-timeouts --compilers ts:ts-node/register test/**/*.spec.ts",
+    "pree2e": "ts-node scripts/start-test-db.ts",
+    "e2e": "ts-node scripts/run-e2e.ts",
+    "poste2e": "ts-node scripts/stop-test-db.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skmetic/hairdresser-api.git"
+  },
+  "keywords": [
+    "typescript",
+    "koa",
+    "mongodb",
+    "api",
+    "REST",
+    "mongoose"
+  ],
+  "author": "Simon Kmetič",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skmetic/hairdresser-api/issues"
+  },
+  "homepage": "https://github.com/skmetic/hairdresser-api#readme",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "class-validator": "^0.7.3",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-jwt": "^3.3.0",
+    "koa-logger": "^3.1.0",
+    "koa-router": "^7.3.0",
+    "reflect-metadata": "^0.1.10",
+    "sqlite3": "^3.1.13",
+    "typeorm": "^0.1.7",
+    "typescript-ioc": "^0.4.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^1.0.0",
+    "@types/chai": "^4.0.6",
+    "@types/koa": "^2.0.41",
+    "@types/koa-bodyparser": "^3.0.26",
+    "@types/koa-jwt": "^3.2.2",
+    "@types/koa-logger": "^2.0.3",
+    "@types/koa-router": "^7.0.26",
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^8.0.53",
+    "@types/shelljs": "^0.7.6",
+    "@types/sinon": "^4.0.0",
+    "@types/sinon-chai": "^2.7.29",
+    "@types/sqlite3": "^3.1.1",
+    "@types/supertest": "^2.0.4",
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "shelljs": "^0.7.8",
+    "sinon": "^4.1.2",
+    "sinon-chai": "^2.14.0",
+    "supertest": "^3.0.0",
+    "ts-mockito": "^2.2.7",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.3.2"
+  }
+}
