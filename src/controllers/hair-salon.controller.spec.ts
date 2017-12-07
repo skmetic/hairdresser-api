@@ -124,7 +124,7 @@ describe('HairSalonControler', () => {
       ctxMock.verify();
     });
 
-    it('responds with 400 Parameter of invalide type.', async () => {
+    it('responds with 400 Parameter of invalid type.', async () => {
       const requestBody = {
         name: hairSalonWithoutId.name,
         address: hairSalonWithoutId.address,

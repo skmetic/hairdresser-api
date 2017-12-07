@@ -123,14 +123,14 @@ describe('CustomerControler', () => {
       ctxMock.verify();
     });
 
-    it('responds with 400 Parameter of invalide type.', async () => {
+    it('responds with 400 Parameter of invalid type.', async () => {
       const requestBody = {
         firstName: customerWithoutId.firstName,
         lastName: customerWithoutId.lastName,
         phone: customerWithoutId.phone,
         email: 'customerWithoutId.email'
       };
-      const errorMessage = 'Parameter of invalide type.';
+      const errorMessage = 'Parameter of invalid type.';
       const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
