@@ -7,7 +7,7 @@ import { anything, capture, instance, mock, verify, when } from 'ts-mockito';
 import { CustomerController } from './customer.controller';
 import { Customer } from '../models/customer.entity';
 import { CustomerService } from '../services/customer.service';
-import { CustomerTestBuilder } from '../tesutilities/customerTestBuilder';
+import { CustomerTestBuilder } from '../tesutilities/customer.test-builder';
 
 describe('CustomerControler', () => {
   let controlerUnderTest: CustomerController;

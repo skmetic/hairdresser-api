@@ -3,7 +3,7 @@ import { Inject, Singleton } from 'typescript-ioc';
 import { HairSalon } from '../models/hair-salon.entity';
 
 @Singleton
-export class HairStudioService {
+export class HairSalonService {
   constructor() {}
 
   private getHairSalonRepository(): Repository<HairSalon> {
