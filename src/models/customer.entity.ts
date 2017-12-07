@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IsEmail, IsString, MinLength, IsMobilePhone } from 'class-validator';
+import { Reservation } from './reservation.entity';
 
 @Entity()
 export class Customer {
@@ -19,6 +20,9 @@ export class Customer {
   @Column()
   @IsEmail()
   email: string;
+  
+  @OneToMany(type => Reservation, reservation => reservation.customer)
+  reservations: Reservation[];  
 
   public static newCustomer(obj: {
     id?: number;
