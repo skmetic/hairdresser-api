@@ -6,9 +6,15 @@ import { Inject } from 'typescript-ioc';
 import { createConnection } from 'typeorm';
 import * as path from 'path';
 import { CustomerRoutes } from './routes/customer.routes';
+import { HairSalonRoutes } from './routes/hair-salon.routes';
+import { WorkingHoursRoutes } from './routes/working-hours.routes';
 
 export class HairResApi {
-  constructor(@Inject private customerRoutes: CustomerRoutes) {}
+  constructor(
+    @Inject private customerRoutes: CustomerRoutes,
+    @Inject private hairSalonRoutes: HairSalonRoutes,
+    @Inject private workingHoursRoutes: WorkingHoursRoutes
+  ) { }
 
   private async createApp() {
     const connection = await createConnection();
@@ -17,6 +23,9 @@ export class HairResApi {
 
    
     this.customerRoutes.register(router);
+    this.hairSalonRoutes.register(router);
+    this.workingHoursRoutes.register(router);
+
     app.use(logger());
     app.use(bodyParser());
     app.use(router.routes());
