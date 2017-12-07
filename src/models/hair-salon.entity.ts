@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IsEmail, IsString} from 'class-validator';
 import { WorkingHours } from './working-hours.entity';
+import { Reservation } from './reservation.entity';
 
 @Entity()
 export class HairSalon {
@@ -24,6 +25,9 @@ export class HairSalon {
 
   @OneToMany(type => WorkingHours, workingHours => workingHours.hairSalon)
   workingHours: WorkingHours[];
+  
+  @OneToMany(type => Reservation, reservation => reservation.hairSalon)
+  reservations: Reservation[];
 
   public static newHairSalon(obj: {
     id?: number;
