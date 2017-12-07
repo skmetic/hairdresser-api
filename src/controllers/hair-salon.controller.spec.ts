@@ -8,6 +8,7 @@ import { HairSalonController } from './hair-salon.controller';
 import { HairSalon } from '../models/hair-salon.entity';
 import { HairSalonService } from '../services/hair-salon.service';
 import { HairSalonTestBuilder } from '../tesutilities/hair-salon.test-builder';
+import { ErrorMessages } from '../exceptions/error-messages';
 
 describe('HairSalonControler', () => {
   let controlerUnderTest: HairSalonController;
@@ -47,7 +48,7 @@ describe('HairSalonControler', () => {
 
   describe('getHairSalonById', () => {
     it('return with 404 if no hairSalon is found', async () => {
-      const errorMessage = 'No hairSalon found with ID.';
+      const errorMessage = ErrorMessages.HAIR_SALON_NOT_FOUND;
       const ctx: Context = {
         params: { id: testId },
         throw: () => null
@@ -71,5 +72,73 @@ describe('HairSalonControler', () => {
       expect(ctx.body).to.equal(hairSalonWithId);
     });
   });
+
+   // ---------------------------------------------------------------------------------
+  //    Save hairSalon
+  // ---------------------------------------------------------------------------------
+
+  describe('saveHairSalon', () => {
+    it('delegates to hairSalonService and responds with 200', async () => {
+      const requestBody = {
+        name: hairSalonWithoutId.name,
+        address: hairSalonWithoutId.address,
+        phone: hairSalonWithoutId.phone,
+        email: hairSalonWithoutId.email
+      };
+      const ctx: Context = { throw: () => null, request: { body: requestBody } } as Context;
+      when(hairSalonService.saveHairSalon(anything())).thenReturn(Promise.resolve(hairSalonWithId));
+      await controlerUnderTest.saveHairSalon(ctx);
+
+      const [firstArg] = capture(hairSalonService.saveHairSalon).last();
+      expect(firstArg.id).equals(undefined);
+      expect(firstArg.name).equals(requestBody.name);
+      expect(firstArg.address).equals(requestBody.address);
+      expect(firstArg.phone).equals(requestBody.phone);
+      expect(firstArg.email).equals(requestBody.email);
+
+      expect(ctx.body).to.equal(hairSalonWithId);
+    });
+
+    it('does not delegate to hairSalonService', async () => {
+      const requestBody = {
+        name: hairSalonWithoutId.name,
+        address: hairSalonWithoutId.address,
+        email: hairSalonWithoutId.email
+      };
+      const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
+      await controlerUnderTest.saveHairSalon(ctx);
+      verify(hairSalonService.saveHairSalon(anything())).never();
+    });
+
+    it('responds with 400 Missing parameters', async () => {
+      const requestBody = {
+        name: hairSalonWithoutId.name,
+        address: hairSalonWithoutId.address,
+        email: hairSalonWithoutId.email
+      };
+      const errorMessage = ErrorMessages.MISSING_PARAMS;
+      const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
+      const ctxMock = sinon.mock(ctx);
+      ctxMock.expects('throw').withExactArgs(400, errorMessage);
+      await controlerUnderTest.saveHairSalon(ctx);
+      ctxMock.verify();
+    });
+
+    it('responds with 400 Parameter of invalide type.', async () => {
+      const requestBody = {
+        name: hairSalonWithoutId.name,
+        address: hairSalonWithoutId.address,
+        phone: hairSalonWithoutId.phone,
+        email: 'invalid email address'
+      };
+      const errorMessage = ErrorMessages.INVALID_PARAMS
+      const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
+      const ctxMock = sinon.mock(ctx);
+      ctxMock.expects('throw').withExactArgs(400, errorMessage);
+      await controlerUnderTest.saveHairSalon(ctx);
+      ctxMock.verify();
+    });
+  });
+
 
 });
