@@ -22,8 +22,8 @@ export class WorkingHoursTestBuilder{
     this.workingHours.startTime = startTime;
     return this;
   }
-  public withEndTime(phone: string): WorkingHoursTestBuilder {
-    this.workingHours.phone = phone;
+  public withEndTime(endTime: string): WorkingHoursTestBuilder {
+    this.workingHours.endTime = endTime;
     return this;
   }
   public withHairSalon(hairSalon: HairSalon): WorkingHoursTestBuilder {
