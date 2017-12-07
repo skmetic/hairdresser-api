@@ -9,17 +9,17 @@ import { ErrorMessages } from '../exceptions/error-messages';
 
 export class HairSalonController {
   validator: Validator;
-  constructor( @Inject private hairSalonsService: HairSalonService) {
+  constructor( @Inject private hairSalonService: HairSalonService) {
     this.validator = new Validator();
   }
 
   public async getAllHairSalons(ctx: IRouterContext) {
-    ctx.body = await this.hairSalonsService.getAllHairSalons();
+    ctx.body = await this.hairSalonService.getAllHairSalons();
   }
 
   public async getHairSalonById(ctx: IRouterContext) {
     try {
-      ctx.body = await this.hairSalonsService.findHairSalonById(ctx.params.id);
+      ctx.body = await this.hairSalonService.findHairSalonById(ctx.params.id);
     } catch (e) {
       ctx.throw(404, e.message);
     }
@@ -34,12 +34,28 @@ export class HairSalonController {
         if (errors.length > 0) {
           throw new Error(ErrorMessages.INVALID_PARAMS);
         }
-        ctx.body = await this.hairSalonsService.saveHairSalon(reqBody);
+        ctx.body = await this.hairSalonService.saveHairSalon(reqBody);
       } else {
         throw new Error(ErrorMessages.MISSING_PARAMS);
       }
     }catch (e) {
       ctx.throw(400, e.message);
     }  
+  }
+
+  public async deleteHairSalon(ctx: IRouterContext) {
+    try {
+      let hairSalonId: number|string = ctx.params.id;
+      if (!this.validator.isNumber(hairSalonId)) {
+        if (!this.validator.isNumberString(ctx.params.id)) {
+          throw new Error(ErrorMessages.PARAMETER_SHOULD_BE_NUMBER);
+        }
+        hairSalonId = parseInt(ctx.params.id);
+      }
+      await this.hairSalonService.deleteHairSalon(<number>hairSalonId);
+      ctx.status = 200;
+    } catch (e) {
+      ctx.throw(400, e.message);
+    }
   }
 }

@@ -140,5 +140,33 @@ describe('HairSalonControler', () => {
     });
   });
 
+  // ---------------------------------------------------------------------------------
+  //    Delete hairSalon
+  // ---------------------------------------------------------------------------------
+
+  describe('deleteHairSalon', () => {
+    it('delegates id to hairSalonService and responds with 200', async () => {
+      const ctx: Context = { params: { id: testId } } as Context;
+      when(hairSalonService.deleteHairSalon(testId)).thenReturn(Promise.resolve());
+
+      await controlerUnderTest.deleteHairSalon(ctx);
+
+      verify(hairSalonService.deleteHairSalon(testId)).called();
+      expect(ctx.status).to.equal(200);
+    });
+
+    it('respond with 400 wrong type param', async () => {
+      const wrongId = 'wrongId';
+      const errorMessage = 'Parameter should be a number.';
+      const ctx: Context = { params: { id: wrongId }, throw: () => null } as Context;
+      const ctxMock = sinon.mock(ctx);
+      ctxMock.expects('throw').withExactArgs(400, errorMessage);
+
+      await controlerUnderTest.deleteHairSalon(ctx);
+
+      ctxMock.verify();
+    });
+  });
+
 
 });
