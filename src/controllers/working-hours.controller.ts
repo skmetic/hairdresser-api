@@ -7,6 +7,7 @@ import { Validator, validate } from 'class-validator';
 import { ErrorMessages } from '../exceptions/error-messages';
 import { HairSalon } from '../models/hair-salon.entity';
 import { HairSalonService } from '../services/hair-salon.service';
+import * as moment from 'moment';
 
 export class WorkingHoursController {
   validator: Validator;
@@ -32,11 +33,21 @@ export class WorkingHoursController {
   public async findWorkingHours(ctx: IRouterContext) {
     try {
       const query = ctx.query;
-      if (query.startDate && query.endDate && query.hairSalonId) {
+      if (
+        query.hasOwnProperty('startDate') &&
+        query.hasOwnProperty('endDate') &&
+        query.hasOwnProperty('hairSalonId')
+      ) {
         if (
-          !this.validator.isDateString(query.startDate) &&
-          !this.validator.isDateString(query.endDate) &&
-          !this.validator.isNumberString(query.hairSalonId)
+          !this.validator.matches(
+            query.startDate,
+            /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
+          ) ||
+          !this.validator.matches(
+            query.endDate,
+            /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
+          ) ||
+          !this.validator.isNumber(query.hairSalonId)
         ) {
           throw new Error(ErrorMessages.INVALID_PARAMS);
         }
@@ -59,14 +70,19 @@ export class WorkingHoursController {
       const reqBody = ctx.request.body;
       if (reqBody.date && reqBody.startTime && reqBody.endTime && reqBody.hairSalonId) {
         if (
-          !this.validator.isNumber(reqBody.hairSalonId) &&
-          !this.validator.isDateString(reqBody.date) &&
-          !this.validator.isMilitaryTime(reqBody.startTime) &&
+          !this.validator.isNumber(reqBody.hairSalonId) ||
+          !this.validator.matches(
+            reqBody.date,
+            /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
+          ) ||
+          !this.validator.isMilitaryTime(reqBody.startTime) ||
           !this.validator.isMilitaryTime(reqBody.endTime)
         ) {
           throw new Error(ErrorMessages.INVALID_PARAMS);
         }
-        reqBody.hairSalon = this.hairSalonService.findHairSalonById(reqBody.hairSalonId);
+        reqBody.date = new Date(reqBody.date);
+        reqBody.hairSalon = await this.hairSalonService.findHairSalonById(reqBody.hairSalonId);
+        console.log('date', reqBody.date);
         const workingHours = WorkingHours.newWorkingHours(reqBody);
         const errors = await validate(workingHours);
         if (errors.length > 0) {
