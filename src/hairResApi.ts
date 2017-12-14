@@ -8,12 +8,14 @@ import * as path from 'path';
 import { CustomerRoutes } from './routes/customer.routes';
 import { HairSalonRoutes } from './routes/hair-salon.routes';
 import { WorkingHoursRoutes } from './routes/working-hours.routes';
+import { ReservationRoutes } from './routes/reservation.routes';
 
 export class HairResApi {
   constructor(
     @Inject private customerRoutes: CustomerRoutes,
     @Inject private hairSalonRoutes: HairSalonRoutes,
-    @Inject private workingHoursRoutes: WorkingHoursRoutes
+    @Inject private workingHoursRoutes: WorkingHoursRoutes,
+    @Inject private reservationRoutes: ReservationRoutes
   ) { }
 
   private async createApp() {
@@ -25,6 +27,7 @@ export class HairResApi {
     this.customerRoutes.register(router);
     this.hairSalonRoutes.register(router);
     this.workingHoursRoutes.register(router);
+    this.reservationRoutes.register(router);
 
     app.use(logger());
     app.use(bodyParser());

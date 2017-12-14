@@ -21,7 +21,7 @@ export class Reservation {
 
   @Column()
   @IsString()
-  treatment: string;
+  service: string;
 
   @ManyToOne(type => HairSalon, hairSalon => hairSalon.reservations)
   hairSalon: HairSalon;
@@ -37,12 +37,14 @@ export class Reservation {
     endTime: string;
     hairSalon: Object;
     customer: Object;
+    service: string;
   }) {
     const newReservation = new Reservation();
     if (obj.id) newReservation.id = obj.id;
      newReservation.date = obj.date;
      newReservation.startTime = obj.startTime;
     newReservation.endTime = obj.endTime;
+    newReservation.service = obj.service;
     if (obj.hairSalon) newReservation.hairSalon = HairSalon.newHairSalon(<HairSalon>obj.hairSalon);
     if (obj.customer) newReservation.customer = Customer.newCustomer(<Customer>obj.customer);
     return newReservation;
