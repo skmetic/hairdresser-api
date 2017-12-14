@@ -24,18 +24,20 @@ export class ReservationService {
   }) {
     let queryBuilder = this.getReservationRepository()
       .createQueryBuilder('reservation')
-      .where('reservation.date BETWEEN :startDate ADN :endDate', {
+      .leftJoinAndSelect('reservation.hairSalon', 'hairSalon')
+      .leftJoinAndSelect('reservation.customer', 'customer')
+      .where('reservation.date BETWEEN :startDate AND :endDate', {
         startDate: query.startDate,
         endDate: query.endDate
       });
-    if (query.hasOwnProperty('customerId')) {
-      queryBuilder = queryBuilder.andWhere('reservation.hairSalonId = :id', {
-        id: query.hairSalonId
+    if (query.hairSalonId) {
+      queryBuilder = queryBuilder.andWhere('reservation.hairSalonId = :hid', {
+        hid: query.hairSalonId
       });
     }
-    if (query.hasOwnProperty('customerId')) {
-      queryBuilder = queryBuilder.andWhere('reservation.customerId = :id', {
-        id: query.customerId
+    if (query.customerId) {
+      queryBuilder = queryBuilder.andWhere('reservation.customerId = :cid', {
+        cid: query.customerId
       });
     }
 
@@ -52,7 +54,7 @@ export class ReservationService {
     date = `${date} 00: 00: 00.00`;
     return await this.getReservationRepository()
       .createQueryBuilder('res')
-      .where('res.date = :date', { date })
+      .where('res.date = :date', { date:date })
       .andWhere('res.hairSalonId = :id', { id: hairSalonId })
       .andWhere(
         '(res.startTime <= :st AND res.endTime >:st) OR (res.startTime <= :st AND res.endTime >= :et ) OR (res.startTime >= :st AND res.endTime <= :et ) OR (res.startTime < :et AND res.endTime >= :et )',
