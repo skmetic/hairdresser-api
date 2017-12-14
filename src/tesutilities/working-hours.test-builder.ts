@@ -1,9 +1,8 @@
-import { WorkingHours } from "../models/working-hours.entity";
+import { WorkingHours } from '../models/working-hours.entity';
 import { HairSalonTestBuilder } from './hair-salon.test-builder';
 import { HairSalon } from '../models/hair-salon.entity';
 
-export class WorkingHoursTestBuilder{
-
+export class WorkingHoursTestBuilder {
   private workingHours: WorkingHours = new WorkingHours();
 
   public static newWorkingHours() {
@@ -31,27 +30,34 @@ export class WorkingHoursTestBuilder{
     return this;
   }
 
-  public withDefaultValues(): WorkingHoursTestBuilder{
-    return this
-      .withDate(new Date('2017-12-01'))
+  public withDefaultValues(): WorkingHoursTestBuilder {
+    return this.withDate(new Date('2017-12-01'))
       .withStartTime('09:00')
       .withEndTime('20:00')
-      .withHairSalon(HairSalonTestBuilder
-        .newHairSalon()
-        .withDefaultValues()
-        .build()
-      )
+      .withHairSalon(this.buildDefaultHairSalon());
   }
 
-  public build(): WorkingHours{
+  private buildDefaultHairSalon(): HairSalon {
+    return HairSalonTestBuilder.newHairSalon()
+      .withDefaultValues()
+      .withId(4)
+      .build();
+  }
+
+  public build(): WorkingHours {
     return this.workingHours;
   }
 
-  public static generateListOfDefaultWorkingHourss(length: number) {
+  public static generateListOfDefaultWorkingHours(length: number) {
     const result = [];
     let i = 0;
     while (i++ < length) {
-      result.push(WorkingHoursTestBuilder.newWorkingHours().withDefaultValues().withId(Math.random() * 100).build())
+      result.push(
+        WorkingHoursTestBuilder.newWorkingHours()
+          .withDefaultValues()
+          .withId(Math.floor(Math.random() * 100))
+          .build()
+      );
     }
     return result;
   }

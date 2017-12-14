@@ -13,6 +13,7 @@ export class WorkingHoursRoutes extends Routes {
     return [
       Route.newRoute('/workinghours', 'get', (ctx: IRouterContext) => this.workingHoursController.getAllWorkingHourss(ctx)),
       Route.newRoute('/workinghours', 'post', (ctx: IRouterContext) => this.workingHoursController.saveWorkingHours(ctx)),
+      Route.newRoute('/workinghours/find-date', 'get', (ctx: IRouterContext) => this.workingHoursController.findWorkingHoursByDayAndHairSalon(ctx)),
       Route.newRoute('/workinghours/find', 'get', (ctx: IRouterContext) => this.workingHoursController.findWorkingHours(ctx)),
       Route.newRoute('/workinghours/:id', 'get', (ctx: IRouterContext) => this.workingHoursController.getWorkingHoursById(ctx)),
       Route.newRoute('/workinghours/:id', 'delete', (ctx: IRouterContext) => this.workingHoursController.deleteWorkingHours(ctx)),

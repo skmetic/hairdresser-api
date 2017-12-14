@@ -31,9 +31,6 @@ export class WorkingHoursService {
     .where('workingHours.date BETWEEN :sd AND :ed' , { sd:startDate, ed:endDate })
     .andWhere('workingHours.hairSalonId = :id', { id: hairSalonId })
     .getMany();
-    console.log("startDate", startDate);
-    console.log("endDate", endDate);
-    console.log("result", result);
     return result;   
   }  
   public async saveWorkingHours(workingHours: WorkingHours): Promise<WorkingHours> {
@@ -48,4 +45,15 @@ export class WorkingHoursService {
   public async deleteWorkingHours(id: number) {
     return this.getWorkingHoursRepository().deleteById(id);
   }
+
+  public async findWorkingHoursByDayAndHairSalon(date: string, hairSalonId: number) {
+    date = `${date} 00:00:00.00`;
+    const result = await this.getWorkingHoursRepository()
+    .createQueryBuilder('workingHours')
+    .where('workingHours.date BETWEEN :date AND :date' , { date })
+    .andWhere('workingHours.hairSalonId = :id', { id: hairSalonId })
+    .getMany();
+    return result;   
+  }  
+  
 }
