@@ -1,0 +1,16 @@
+[
+    {
+        "address": "London 101",
+        "email": "help@hair.salon.com",
+        "id": "1",
+        "name": "Hair salon 1",
+        "phone": "332 00 101"
+    },
+    {
+        "address": "London 202",
+        "email": "info@hair2.salon.com",
+        "id": "2",
+        "name": "Hair salon 2",
+        "phone": "332 00 202"
+    }
+]

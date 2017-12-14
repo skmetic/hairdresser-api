@@ -1,0 +1,51 @@
+[
+    {
+        "date": "2017-12-02 00:00:00.00",
+        "endTime": "20:00",
+        "hairSalonId": "1",
+        "id": "1",
+        "startTime": "08:00"
+    },
+    {
+        "date": "2017-12-05 00:00:00.00",
+        "endTime": "20:00",
+        "hairSalonId": "1",
+        "id": "2",
+        "startTime": "09:00"
+    },
+    {
+        "date": "2017-12-11 00:00:00.00",
+        "endTime": "20:00",
+        "hairSalonId": "1",
+        "id": "3",
+        "startTime": "07:45"
+    },
+    {
+        "date": "2017-12-08 00:00:00.00",
+        "endTime": "20:00",
+        "hairSalonId": "1",
+        "id": "4",
+        "startTime": "10:00"
+    },
+    {
+        "date": "2017-12-09 00:00:00.00",
+        "endTime": "20:00",
+        "hairSalonId": "1",
+        "id": "5",
+        "startTime": "10:00"
+    },
+    {
+        "date": "2017-12-18 00:00:00.00",
+        "endTime": "20:00",
+        "hairSalonId": "1",
+        "id": "7",
+        "startTime": "10:00"
+    },
+    {
+        "date": "2017-12-01 00:00:00.00",
+        "endTime": "22:00",
+        "hairSalonId": "1",
+        "id": "8",
+        "startTime": "10:00"
+    }
+]

@@ -1,0 +1,65 @@
+[
+    {
+        "customerId": "1",
+        "date": "2017-12-01",
+        "endTime": "10:30",
+        "hairSalonId": "1",
+        "id": "1",
+        "service": "Haircut",
+        "startTime": "10:00"
+    },
+    {
+        "customerId": "3",
+        "date": "2017-12-01 00:00:00.00",
+        "endTime": "11:30",
+        "hairSalonId": "1",
+        "id": "2",
+        "service": "HairCut & style",
+        "startTime": "10:00"
+    },
+    {
+        "customerId": "3",
+        "date": "2017-12-01 00:00:00.00",
+        "endTime": "12:30",
+        "hairSalonId": "1",
+        "id": "3",
+        "service": "HairCut & style",
+        "startTime": "11:30"
+    },
+    {
+        "customerId": "3",
+        "date": "2017-12-01 00:00:00.00",
+        "endTime": "13:30",
+        "hairSalonId": "1",
+        "id": "4",
+        "service": "HairCut & style",
+        "startTime": "12:30"
+    },
+    {
+        "customerId": "3",
+        "date": "2017-12-01 00:00:00.00",
+        "endTime": "14:30",
+        "hairSalonId": "1",
+        "id": "5",
+        "service": "HairCut & style",
+        "startTime": "13:30"
+    },
+    {
+        "customerId": "3",
+        "date": "2017-12-01 00:00:00.00",
+        "endTime": "15:00",
+        "hairSalonId": "1",
+        "id": "6",
+        "service": "HairCut & style",
+        "startTime": "14:30"
+    },
+    {
+        "customerId": "3",
+        "date": "2017-12-01 00:00:00.00",
+        "endTime": "18:50",
+        "hairSalonId": "1",
+        "id": "8",
+        "service": "HairCut & style",
+        "startTime": "18:40"
+    }
+]

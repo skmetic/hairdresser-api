@@ -1,0 +1,23 @@
+[
+    {
+        "email": "jon.snov@got.com",
+        "firstName": "Jon",
+        "id": "1",
+        "lastName": "Snow",
+        "phone": "+38633200100"
+    },
+    {
+        "email": "sansa.stark@got.com",
+        "firstName": "Sansa",
+        "id": "2",
+        "lastName": "Stark",
+        "phone": "+38633200101"
+    },
+    {
+        "email": "arya.stark@got.com",
+        "firstName": "Arya",
+        "id": "3",
+        "lastName": "Stark",
+        "phone": "+38633200102"
+    }
+]
