@@ -14,13 +14,13 @@ import { ErrorMessages } from '../exceptions/error-messages';
 import { HairSalon } from '../models/hair-salon.entity';
 import { HairSalonTestBuilder } from '../tesutilities/hair-salon.test-builder';
 
-describe('WorkingHoursControler', () => {
-  let controlerUnderTest: WorkingHoursController;
+describe('WorkingHoursController', () => {
+  let controllerUnderTest: WorkingHoursController;
   let workingHoursService: WorkingHoursService;
   let hairSalonService: HairSalonService;
   const testId = 123;
   const workingHoursQuery = {
-    hairSalonId: 1,
+    hairSalonId:'1',
     startDate: '2017-12-01',
     endDate: '2017-12-10'
   };
@@ -35,14 +35,14 @@ describe('WorkingHoursControler', () => {
     .withDefaultValues()
     .withId(testId)
     .build();
-  const workingHoursList: WorkingHours[] = WorkingHoursTestBuilder.generateListOfDefaultWorkingHourss(
+  const workingHoursList: WorkingHours[] = WorkingHoursTestBuilder.generateListOfDefaultWorkingHours(
     3
   );
 
   beforeEach(() => {
     workingHoursService = mock(WorkingHoursService);
     hairSalonService = mock(HairSalonService);
-    controlerUnderTest = new WorkingHoursController(
+    controllerUnderTest = new WorkingHoursController(
       instance(workingHoursService),
       instance(hairSalonService)
     );
@@ -54,10 +54,10 @@ describe('WorkingHoursControler', () => {
 
   describe('getAllWorkingHourss', () => {
     it('puts the workingHourss on the body', async () => {
-      const workingHourss = WorkingHoursTestBuilder.generateListOfDefaultWorkingHourss(6);
+      const workingHourss = WorkingHoursTestBuilder.generateListOfDefaultWorkingHours(6);
       when(workingHoursService.getAllWorkingHourss()).thenReturn(Promise.resolve(workingHourss));
-      const ctx: Context = {} as Context;
-      await controlerUnderTest.getAllWorkingHourss(ctx);
+      const ctx = {} as Context;
+      await controllerUnderTest.getAllWorkingHourss(ctx);
       expect(ctx.body).to.equal(workingHourss);
     });
   });
@@ -69,7 +69,7 @@ describe('WorkingHoursControler', () => {
   describe('getWorkingHoursById', () => {
     it('return with 404 if no workingHours is found', async () => {
       const errorMessage = ErrorMessages.HAIR_SALON_NOT_FOUND;
-      const ctx: Context = {
+      const ctx = {
         params: { id: testId },
         throw: () => undefined
       } as Context;
@@ -77,19 +77,19 @@ describe('WorkingHoursControler', () => {
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(404, errorMessage);
 
-      await controlerUnderTest.getWorkingHoursById(ctx);
+      await controllerUnderTest.getWorkingHoursById(ctx);
 
       ctxMock.verify();
     });
 
     it('puts the found workingHours on the body', async () => {
-      const ctx: Context = {} as Context;
+      const ctx = {} as Context;
       ctx.params = { id: testId };
       when(workingHoursService.findWorkingHoursById(testId)).thenReturn(
         Promise.resolve(workingHoursWithId)
       );
 
-      await controlerUnderTest.getWorkingHoursById(ctx);
+      await controllerUnderTest.getWorkingHoursById(ctx);
       verify(workingHoursService.findWorkingHoursById(testId)).called();
       expect(ctx.body).to.equal(workingHoursWithId);
     });
@@ -99,7 +99,7 @@ describe('WorkingHoursControler', () => {
   //    Save workingHours
   // ---------------------------------------------------------------------------------
 
-  describe('saveWorkingHours', () => {
+  describe('saveWorkingHours', async () => {
     it('delegates to workingHoursService and responds with 200', async () => {
       const requestBody = {
         date: moment(workingHoursWithoutId.date).format('YYYY-MM-DD'),
@@ -107,14 +107,14 @@ describe('WorkingHoursControler', () => {
         endTime: workingHoursWithoutId.endTime,
         hairSalonId: 1
       };
-      const ctx: Context = { throw: () => undefined, request: { body: requestBody } } as Context;
+      const ctx = { throw: () => undefined, request: { body: requestBody } } as Context;
       when(workingHoursService.saveWorkingHours(anything())).thenReturn(
         Promise.resolve(workingHoursWithId)
       );
       when(hairSalonService.findHairSalonById(anything())).thenReturn(
         Promise.resolve(hairSalonWithId)
       );
-      await controlerUnderTest.saveWorkingHours(ctx);
+      await controllerUnderTest.saveWorkingHours(ctx);
 
       const [firstArg] = capture(workingHoursService.saveWorkingHours).last();
       expect(firstArg.id).equals(undefined);
@@ -134,8 +134,8 @@ describe('WorkingHoursControler', () => {
         startTime: workingHoursWithoutId.startTime,
         hairSalon: workingHoursWithoutId.hairSalon
       };
-      const ctx: Context = { request: { body: requestBody }, throw: () => undefined } as Context;
-      await controlerUnderTest.saveWorkingHours(ctx);
+      const ctx = { request: { body: requestBody }, throw: () => undefined } as Context;
+      await controllerUnderTest.saveWorkingHours(ctx);
       verify(workingHoursService.saveWorkingHours(anything())).never();
     });
 
@@ -146,10 +146,10 @@ describe('WorkingHoursControler', () => {
         hairSalon: workingHoursWithoutId.hairSalon
       };
       const errorMessage = ErrorMessages.MISSING_PARAMS;
-      const ctx: Context = { request: { body: requestBody }, throw: () => undefined } as Context;
+      const ctx = { request: { body: requestBody }, throw: () => undefined } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
-      await controlerUnderTest.saveWorkingHours(ctx);
+      await controllerUnderTest.saveWorkingHours(ctx);
       ctxMock.verify();
     });
 
@@ -161,10 +161,10 @@ describe('WorkingHoursControler', () => {
         hairSalonId: testId
       };
       const errorMessage = ErrorMessages.INVALID_PARAMS;
-      const ctx: Context = { request: { body: requestBody }, throw: () => undefined } as Context;
+      const ctx = { request: { body: requestBody }, throw: () => undefined } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
-      await controlerUnderTest.saveWorkingHours(ctx);
+      await controllerUnderTest.saveWorkingHours(ctx);
       ctxMock.verify();
     });
   });
@@ -175,10 +175,10 @@ describe('WorkingHoursControler', () => {
 
   describe('deleteWorkingHours', () => {
     it('delegates id to workingHoursService and responds with 200', async () => {
-      const ctx: Context = { params: { id: testId } } as Context;
+      const ctx = { params: { id: testId } } as Context;
       when(workingHoursService.deleteWorkingHours(testId)).thenReturn(Promise.resolve());
 
-      await controlerUnderTest.deleteWorkingHours(ctx);
+      await controllerUnderTest.deleteWorkingHours(ctx);
 
       verify(workingHoursService.deleteWorkingHours(testId)).called();
       expect(ctx.status).to.equal(200);
@@ -187,11 +187,11 @@ describe('WorkingHoursControler', () => {
     it('respond with 400, parameter should be a number', async () => {
       const wrongId = 'wrongId';
       const errorMessage = 'Parameter should be a number.';
-      const ctx: Context = { params: { id: wrongId }, throw: () => undefined } as Context;
+      const ctx = { params: { id: wrongId }, throw: () => undefined } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
 
-      await controlerUnderTest.deleteWorkingHours(ctx);
+      await controllerUnderTest.deleteWorkingHours(ctx);
 
       ctxMock.verify();
     });
@@ -203,18 +203,18 @@ describe('WorkingHoursControler', () => {
 
   describe('findWorkingHours', () => {
     it('delegates query params to workingHoursService and responds with result', async () => {
-      const ctx: Context = { query: workingHoursQuery, throw: () => undefined } as Context;
+      const ctx = { query: workingHoursQuery, throw: () => undefined } as Context;
       when(workingHoursService.findWorkingHours(anything(), anything(), anything())).thenReturn(
         Promise.resolve(workingHoursList)
       );
 
-      await controlerUnderTest.findWorkingHours(ctx);
+      await controllerUnderTest.findWorkingHours(ctx);
 
       verify(
         workingHoursService.findWorkingHours(
           workingHoursQuery.startDate,
           workingHoursQuery.endDate,
-          workingHoursQuery.hairSalonId
+          parseInt(workingHoursQuery.hairSalonId)
         )
       ).called();
       expect(ctx.body).to.equal(workingHoursList);
@@ -226,10 +226,10 @@ describe('WorkingHoursControler', () => {
         endDate: workingHoursQuery.endDate
       };
       const errorMessage = ErrorMessages.MISSING_QUERY_PARAMS;
-      const ctx: Context = { query, throw: () => undefined } as Context;
+      const ctx = { query, throw: () => undefined } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
-      await controlerUnderTest.findWorkingHours(ctx);
+      await controllerUnderTest.findWorkingHours(ctx);
       ctxMock.verify();
     });
 
@@ -240,10 +240,10 @@ describe('WorkingHoursControler', () => {
         hairSalonId: workingHoursQuery.hairSalonId
       };
       const errorMessage = ErrorMessages.INVALID_PARAMS;
-      const ctx: Context = { query, throw: () => undefined } as Context;
+      const ctx = { query, throw: () => undefined } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
-      await controlerUnderTest.findWorkingHours(ctx);
+      await controllerUnderTest.findWorkingHours(ctx);
       ctxMock.verify();
     });
   });

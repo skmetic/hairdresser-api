@@ -1,7 +1,6 @@
-import { HairSalon } from "../models/hair-salon.entity";
+import { HairSalon } from '../models/hair-salon.entity';
 
-export class HairSalonTestBuilder{
-
+export class HairSalonTestBuilder {
   private hairSalon: HairSalon = new HairSalon();
 
   public static newHairSalon() {
@@ -29,15 +28,14 @@ export class HairSalonTestBuilder{
     return this;
   }
 
-  public withDefaultValues(): HairSalonTestBuilder{
-    return this
-      .withName('Cher Salon - Chelsea')
+  public withDefaultValues(): HairSalonTestBuilder {
+    return this.withName('Cher Salon - Chelsea')
       .withAddress('496 Kings Road, London, SW10 0LE')
       .withPhone('0330 100 3515')
-      .withEmail('help@treatwell.co.uk')
+      .withEmail('help@treatwell.co.uk');
   }
 
-  public build(): HairSalon{
+  public build(): HairSalon {
     return this.hairSalon;
   }
 
@@ -45,7 +43,12 @@ export class HairSalonTestBuilder{
     const result = [];
     let i = 0;
     while (i++ < length) {
-      result.push(HairSalonTestBuilder.newHairSalon().withDefaultValues().withId(Math.random() * 100).build())
+      result.push(
+        HairSalonTestBuilder.newHairSalon()
+          .withDefaultValues()
+          .withId(Math.floor(Math.random() * 100))
+          .build()
+      );
     }
     return result;
   }

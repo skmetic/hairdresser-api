@@ -11,7 +11,7 @@ import { HairSalonTestBuilder } from '../tesutilities/hair-salon.test-builder';
 import { ErrorMessages } from '../exceptions/error-messages';
 
 describe('HairSalonControler', () => {
-  let controlerUnderTest: HairSalonController;
+  let controllerUnderTest: HairSalonController;
   let hairSalonService: HairSalonService;
 
   const testId = 226;
@@ -25,7 +25,7 @@ describe('HairSalonControler', () => {
 
   beforeEach(() => {
     hairSalonService = mock(HairSalonService);
-    controlerUnderTest = new HairSalonController(instance(hairSalonService));
+    controllerUnderTest = new HairSalonController(instance(hairSalonService));
   });
 
   // ---------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ describe('HairSalonControler', () => {
       const hairSalons = HairSalonTestBuilder.generateListOfDefaultHairSalons(6);
       when(hairSalonService.getAllHairSalons()).thenReturn(Promise.resolve(hairSalons));
       const ctx: Context = {} as Context;
-      await controlerUnderTest.getAllHairSalons(ctx);
+      await controllerUnderTest.getAllHairSalons(ctx);
       expect(ctx.body).to.equal(hairSalons);
     });
   });
@@ -57,7 +57,7 @@ describe('HairSalonControler', () => {
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(404, errorMessage);
 
-      await controlerUnderTest.getHairSalonById(ctx);
+      await controllerUnderTest.getHairSalonById(ctx);
 
       ctxMock.verify();
     });
@@ -67,7 +67,7 @@ describe('HairSalonControler', () => {
       ctx.params = { id: testId };
       when(hairSalonService.findHairSalonById(testId)).thenReturn(Promise.resolve(hairSalonWithId));
 
-      await controlerUnderTest.getHairSalonById(ctx);
+      await controllerUnderTest.getHairSalonById(ctx);
       verify(hairSalonService.findHairSalonById(testId)).called();
       expect(ctx.body).to.equal(hairSalonWithId);
     });
@@ -87,7 +87,7 @@ describe('HairSalonControler', () => {
       };
       const ctx: Context = { throw: () => null, request: { body: requestBody } } as Context;
       when(hairSalonService.saveHairSalon(anything())).thenReturn(Promise.resolve(hairSalonWithId));
-      await controlerUnderTest.saveHairSalon(ctx);
+      await controllerUnderTest.saveHairSalon(ctx);
 
       const [firstArg] = capture(hairSalonService.saveHairSalon).last();
       expect(firstArg.id).equals(undefined);
@@ -106,7 +106,7 @@ describe('HairSalonControler', () => {
         email: hairSalonWithoutId.email
       };
       const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
-      await controlerUnderTest.saveHairSalon(ctx);
+      await controllerUnderTest.saveHairSalon(ctx);
       verify(hairSalonService.saveHairSalon(anything())).never();
     });
 
@@ -120,7 +120,7 @@ describe('HairSalonControler', () => {
       const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
-      await controlerUnderTest.saveHairSalon(ctx);
+      await controllerUnderTest.saveHairSalon(ctx);
       ctxMock.verify();
     });
 
@@ -135,7 +135,7 @@ describe('HairSalonControler', () => {
       const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
-      await controlerUnderTest.saveHairSalon(ctx);
+      await controllerUnderTest.saveHairSalon(ctx);
       ctxMock.verify();
     });
   });
@@ -149,7 +149,7 @@ describe('HairSalonControler', () => {
       const ctx: Context = { params: { id: testId } } as Context;
       when(hairSalonService.deleteHairSalon(testId)).thenReturn(Promise.resolve());
 
-      await controlerUnderTest.deleteHairSalon(ctx);
+      await controllerUnderTest.deleteHairSalon(ctx);
 
       verify(hairSalonService.deleteHairSalon(testId)).called();
       expect(ctx.status).to.equal(200);
@@ -162,7 +162,7 @@ describe('HairSalonControler', () => {
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
 
-      await controlerUnderTest.deleteHairSalon(ctx);
+      await controllerUnderTest.deleteHairSalon(ctx);
 
       ctxMock.verify();
     });

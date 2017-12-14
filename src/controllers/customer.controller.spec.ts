@@ -10,7 +10,7 @@ import { CustomerService } from '../services/customer.service';
 import { CustomerTestBuilder } from '../tesutilities/customer.test-builder';
 
 describe('CustomerControler', () => {
-  let controlerUnderTest: CustomerController;
+  let controllerUnderTest: CustomerController;
   let customerService: CustomerService;
 
   const testId = 1928;
@@ -24,7 +24,7 @@ describe('CustomerControler', () => {
 
   beforeEach(() => {
     customerService = mock(CustomerService);
-    controlerUnderTest = new CustomerController(instance(customerService));
+    controllerUnderTest = new CustomerController(instance(customerService));
   });
 
   // ---------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ describe('CustomerControler', () => {
       const customers = CustomerTestBuilder.generateListOfDefaultCustomers(6);
       when(customerService.getAllCustomers()).thenReturn(Promise.resolve(customers));
       const ctx: Context = {} as Context;
-      await controlerUnderTest.getAllCustomers(ctx);
+      await controllerUnderTest.getAllCustomers(ctx);
       expect(ctx.body).to.equal(customers);
     });
   });
@@ -56,7 +56,7 @@ describe('CustomerControler', () => {
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(404, errorMessage);
 
-      await controlerUnderTest.getCustomerById(ctx);
+      await controllerUnderTest.getCustomerById(ctx);
 
       ctxMock.verify();
     });
@@ -66,7 +66,7 @@ describe('CustomerControler', () => {
       ctx.params = { id: testId };
       when(customerService.findCustomerById(testId)).thenReturn(Promise.resolve(customerWithId));
 
-      await controlerUnderTest.getCustomerById(ctx);
+      await controllerUnderTest.getCustomerById(ctx);
       verify(customerService.findCustomerById(testId)).called();
       expect(ctx.body).to.equal(customerWithId);
     });
@@ -86,7 +86,7 @@ describe('CustomerControler', () => {
       };
       const ctx: Context = { throw: () => null, request: { body: requestBody } } as Context;
       when(customerService.saveCustomer(anything())).thenReturn(Promise.resolve(customerWithId));
-      await controlerUnderTest.saveCustomer(ctx);
+      await controllerUnderTest.saveCustomer(ctx);
 
       const [firstArg] = capture(customerService.saveCustomer).last();
       expect(firstArg.id).equals(undefined);
@@ -105,7 +105,7 @@ describe('CustomerControler', () => {
         email: customerWithoutId.email
       };
       const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
-      await controlerUnderTest.saveCustomer(ctx);
+      await controllerUnderTest.saveCustomer(ctx);
       verify(customerService.saveCustomer(anything())).never();
     });
 
@@ -119,7 +119,7 @@ describe('CustomerControler', () => {
       const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
-      await controlerUnderTest.saveCustomer(ctx);
+      await controllerUnderTest.saveCustomer(ctx);
       ctxMock.verify();
     });
 
@@ -134,7 +134,7 @@ describe('CustomerControler', () => {
       const ctx: Context = { request: { body: requestBody }, throw: () => null } as Context;
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
-      await controlerUnderTest.saveCustomer(ctx);
+      await controllerUnderTest.saveCustomer(ctx);
       ctxMock.verify();
     });
   });
@@ -148,7 +148,7 @@ describe('CustomerControler', () => {
       const ctx: Context = { params: { id: testId } } as Context;
       when(customerService.deleteCustomer(testId)).thenReturn(Promise.resolve());
 
-      await controlerUnderTest.deleteCustomer(ctx);
+      await controllerUnderTest.deleteCustomer(ctx);
 
       verify(customerService.deleteCustomer(testId)).called();
       expect(ctx.status).to.equal(200);
@@ -161,7 +161,7 @@ describe('CustomerControler', () => {
       const ctxMock = sinon.mock(ctx);
       ctxMock.expects('throw').withExactArgs(400, errorMessage);
 
-      await controlerUnderTest.deleteCustomer(ctx);
+      await controllerUnderTest.deleteCustomer(ctx);
 
       ctxMock.verify();
     });

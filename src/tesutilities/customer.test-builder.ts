@@ -1,7 +1,6 @@
-import { Customer } from "../models/customer.entity";
+import { Customer } from '../models/customer.entity';
 
-export class CustomerTestBuilder{
-
+export class CustomerTestBuilder {
   private customer: Customer = new Customer();
 
   public static newCustomer() {
@@ -29,15 +28,14 @@ export class CustomerTestBuilder{
     return this;
   }
 
-  public withDefaultValues(): CustomerTestBuilder{
-    return this
-      .withFirstName('Joe')
+  public withDefaultValues(): CustomerTestBuilder {
+    return this.withFirstName('Joe')
       .withLastName('Doe')
       .withPhone('202-456-1414')
-      .withEmail('joe.doe@test.dev')
+      .withEmail('joe.doe@test.dev');
   }
 
-  public build(): Customer{
+  public build(): Customer {
     return this.customer;
   }
 
@@ -45,7 +43,12 @@ export class CustomerTestBuilder{
     const result = [];
     let i = 0;
     while (i++ < length) {
-      result.push(CustomerTestBuilder.newCustomer().withDefaultValues().withId(Math.random() * 100).build())
+      result.push(
+        CustomerTestBuilder.newCustomer()
+          .withDefaultValues()
+          .withId(Math.floor(Math.random() * 100))
+          .build()
+      );
     }
     return result;
   }
